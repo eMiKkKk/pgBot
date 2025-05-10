@@ -4,7 +4,7 @@
   "description": "bot for finding fire hydrants in your city",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "node api/bot.js",
     "test": "node test.js"
   },
   "author": "eMiKk",
@@ -13,7 +13,9 @@
     "@vercel/node": "^2.15.5",
     "axios": "^1.6.7",
     "dotenv": "^16.5.0",
-    "telegraf": "^4.16.3"
+    "telegraf": "^4.16.3",
+    "@turf/turf": "^7.2.0"
+
   },
     "engines": {
     "node": "18.x"

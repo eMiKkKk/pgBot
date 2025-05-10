@@ -2,7 +2,7 @@ require('dotenv').config();
 const { Telegraf } = require('telegraf');
 const axios = require('axios');
 const fs = require('fs');
-const hydrantsGeoJSON = JSON.parse(fs.readFileSync('hydrants.geojson'));
+const hydrantsGeoJSON = JSON.parse(fs.readFileSync('./hydrants.geojson'));
 const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN);
 
 const logMessage = (ctx) => {
@@ -80,14 +80,6 @@ bot.start((ctx) => {
   setTimeout(() => ctx.reply('К чёрту предисловие, вводи адрес, как будто ты вводишь его в навигаторе. Город тоже уточнить не забудь )'), 10000);
 });
 
-module.exports = async (req, res) => {
-  if (req.method === 'POST') {
-    await bot.handleUpdate(req.body, res);
-  } else {
-    res.status(200).send('Bot is running');
-  }
-};
-
 bot.on('text', async (ctx) => {
   try {
 
@@ -124,7 +116,7 @@ bot.on('text', async (ctx) => {
       }
 
     await ctx.replyWithPhoto(
-        { source: 'map.png' },
+        { source: Buffer.from(response.data) },
         {
           caption: `Ближайшие гидранты:\n${hydrantsList}`,
           parse_mode: 'Markdown' // Включаем поддержку Markdown

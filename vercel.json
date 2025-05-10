@@ -9,12 +9,8 @@
   "routes": [
     {
       "src": "/api/bot",
-      "dest": "/api/bot.js",
+      "dest": "api/bot.js",
       "methods": ["GET", "POST"]
-    },
-    {
-      "src": "/public/(.*)",
-      "dest": "/public/$1"
     }
   ]
 }
