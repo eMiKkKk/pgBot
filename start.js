@@ -138,5 +138,13 @@ bot.on('text', async (ctx) => {
   }
 });
 
-bot.launch();
+module.exports = async (req, res) => {
+  if (req.method === 'POST') {
+    await bot.handleUpdate(req.body, res);
+  } else {
+    res.status(200).send('Bot is running');
+  }
+};
+
+// bot.launch();
 console.log('Бот запущен!');
