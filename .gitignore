@@ -5,3 +5,4 @@ test.js
 package-lock.json
 .env
 *.log
+.vercel

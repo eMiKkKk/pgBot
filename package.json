@@ -4,7 +4,7 @@
   "description": "bot for finding fire hydrants in your city",
   "main": "index.js",
   "scripts": {
-    "start": "node api/bot.js",
+    "start": "node index.js",
     "test": "node test.js"
   },
   "author": "eMiKk",
