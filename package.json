@@ -1,0 +1,18 @@
+{
+  "name": "pgbot",
+  "version": "0.0.1",
+  "description": "bot for finding fire hydrants in your city",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "node test.js"
+  },
+  "author": "eMiKk",
+  "license": "ISC",
+  "dependencies": {
+    "@turf/turf": "^7.2.0",
+    "dotenv": "^16.5.0",
+    "node-geocoder": "^4.4.1",
+    "telegraf": "^4.16.3"
+  }
+}
