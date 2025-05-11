@@ -2,10 +2,12 @@ require('dotenv').config();
 const { Telegraf } = require('telegraf');
 const axios = require('axios');
 const fs = require('fs');
-const hydrantsGeoJSON = JSON.parse(fs.readFileSync('hydrants.geojson'));
+const path = require('path');
+const geojsonPath = path.join(__dirname, './public/hydrants.geojson');
+const hydrantsGeoJSON = JSON.parse(fs.readFileSync(geojsonPath));
 const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN);
-const express = require('express');
-const app = express();
+// const express = require('express');
+// const app = express();
 
 const logMessage = (ctx) => {
   const userId = ctx.from.id;
@@ -73,9 +75,9 @@ function generateYandexMap(center, hydrants) {
   return url;
 }
 
-app.get('/', (req, res) => {
-  res.status(200).send('Bot is awake!');
-});
+// app.get('/', (req, res) => {
+//   res.status(200).send('Bot is awake!');
+// });
 
 // Обработчик сообщений
 
@@ -135,10 +137,19 @@ bot.on('text', async (ctx) => {
   }
 });
 
-bot.launch();
+// bot.launch();
 
 
-app.listen(3000, () => console.log('Keep-alive server started'));
+// app.listen(3000, () => console.log('Keep-alive server started'));
 
 
 console.log('Бот запущен!');
+
+
+
+bot.use((ctx, next) => {
+  console.log(`Update from ${ctx.from?.id}:`, ctx.updateType);
+  return next();
+});
+
+module.exports = bot;

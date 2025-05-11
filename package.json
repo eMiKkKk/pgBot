@@ -3,11 +3,12 @@
   "version": "0.0.1",
   "description": "bot for finding fire hydrants in your city",
   "main": "index.js",
-  "scripts": {
-    "start": "node index.js",
-    "test": "node test.js",
-    "keep-alive": "curl -s https://pgbot-kqvw.onrender.com > /dev/null"
-  },
+"scripts": {
+  "start": "node index.js",
+  "dev": "vercel dev",
+  "deploy": "vercel --prod",
+  "test": "node test.js"
+},
   "author": "eMiKk",
   "license": "ISC",
   "dependencies": {
@@ -16,9 +17,10 @@
     "axios": "^1.6.7",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
-    "telegraf": "^4.16.3"
+    "telegraf": "^4.16.3",
+    "vercel": "^41.7.4"
   },
   "engines": {
-    "node": "18.x"
+    "node": "22.x"
   }
 }
