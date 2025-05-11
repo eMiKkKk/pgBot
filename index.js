@@ -4,6 +4,8 @@ const axios = require('axios');
 const fs = require('fs');
 const hydrantsGeoJSON = JSON.parse(fs.readFileSync('hydrants.geojson'));
 const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN);
+const express = require('express');
+const app = express();
 
 const logMessage = (ctx) => {
   const userId = ctx.from.id;
