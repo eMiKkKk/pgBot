@@ -73,7 +73,9 @@ function generateYandexMap(center, hydrants) {
   return url;
 }
 
-
+app.get('/', (req, res) => {
+  res.status(200).send('Bot is awake!');
+});
 
 // Обработчик сообщений
 
@@ -134,4 +136,9 @@ bot.on('text', async (ctx) => {
 });
 
 bot.launch();
+
+
+app.listen(3000, () => console.log('Keep-alive server started'));
+
+
 console.log('Бот запущен!');
