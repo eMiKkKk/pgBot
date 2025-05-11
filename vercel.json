@@ -1,9 +1,13 @@
 {
-  "version": 2,
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "api/[...slug].js"
+  "functions": {
+    "api/**": {
+      "includeFiles": "node_modules/telebot/plugins/**"
     }
+  },
+  "github": {
+    "silent": true
+  },
+  "rewrites": [
+    { "source": "/api/telegram", "destination": "/api/telegram.js" }
   ]
 }

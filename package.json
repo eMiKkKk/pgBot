@@ -2,15 +2,14 @@
   "name": "pgbot",
   "version": "0.0.1",
   "description": "bot for finding fire hydrants in your city",
-  "main": "index.js",
-"scripts": {
-  "start": "node index.js",
-  "dev": "vercel dev",
-  "deploy": "vercel --prod",
-  "test": "node test.js"
-},
-  "author": "eMiKk",
-  "license": "ISC",
+  "license": "MIT",
+  "author": "Vladislav eMiKk Ermakov",
+  "scripts": {
+    "dev": "vc dev",
+    "dev-with-tunnel": "npm run tunnel & npm run dev",
+    "tunnel": "cloudflared tunnel --url http://localhost:3000",
+    "deploy": "vercel --prod"
+  },
   "dependencies": {
     "@turf/turf": "^7.2.0",
     "@vercel/node": "^2.15.5",
@@ -21,6 +20,6 @@
     "vercel": "^41.7.4"
   },
   "engines": {
-    "node": "22.x"
+    "node": "^18.0.0"
   }
 }
