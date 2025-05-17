@@ -3,7 +3,6 @@
   "version": "0.0.1",
   "description": "bot for finding fire hydrants in your city",
   "license": "MIT",
-  "author": "Vladislav eMiKk Ermakov",
   "scripts": {
     "dev": "vc dev",
     "dev-with-tunnel": "npm run tunnel & npm run dev",

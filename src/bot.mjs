@@ -8,6 +8,24 @@ import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 
 
+const LOG_CHAT_ID = process.env.LOG_CHAT_ID; // Добавьте в .env
+
+async function sendLogToTelegram(message) {
+  if (!LOG_CHAT_ID) {
+    console.log('LOG_CHAT_ID не задан, лог в консоль:', message);
+    return;
+  }
+
+  try {
+    await bot.telegram.sendMessage(
+      LOG_CHAT_ID,
+      `📝 ${new Date().toLocaleString()}\n${message}`,
+      { disable_notification: true }
+    );
+  } catch (err) {
+    console.error('Не удалось отправить лог в Telegram:', err);
+  }
+}
 
 
 const __filename = fileURLToPath(import.meta.url);
@@ -25,7 +43,7 @@ app.post('/api/telegram', async (req, res) => {
   await bot.handleUpdate(req.body, res);  // Передаём запрос в Telegraf
 });
 
-const logMessage = (ctx) => {
+const logMessage = async (ctx) => {
   const userId = ctx.from.id;
   const username = ctx.from.username || 'нет username';
   const firstName = ctx.from.first_name || '';
@@ -34,7 +52,13 @@ const logMessage = (ctx) => {
   const time = new Date().toISOString();
 
   const logEntry = `[${time}] ID: ${userId} (@${username}), Имя: ${firstName} ${lastName}, Текст: "${text}"\n`;
+  const logText = `
+  👤 Пользователь: ${firstName} ${lastName} (@${username}, ID: ${userId})
+  📩 Сообщение: ${text}
+  🕒 Время: ${new Date().toLocaleString()}
+    `.trim();
 
+    await sendLogToTelegram(logText);
   // Дублируем в консоль для удобства
   console.log(logEntry.trim());
 };
@@ -130,11 +154,20 @@ bot.on('text', async (ctx) => {
     console.error(error);
     const errorLog = `[${new Date().toISOString()}] ОШИБКА у ${ctx.from.id}: ${error.message}\n`;
     // fs.appendFileSync('bot.log', errorLog, 'utf8');
+    const errorMessage = `
+    ‼️ ОШИБКА у ${ctx.from.id || 'неизвестного пользователя'}
+    💬 Текст: ${ctx.message?.text || 'нет текста'}
+    🛠 Ошибка: ${error.message}
+    ⏳ Время: ${new Date().toLocaleString()}
+      `.trim();
+
+      await sendLogToTelegram(errorMessage);
     await ctx.reply('Ошибка. Проверь адрес или попробуй позже.');
   }
 });
 
 console.log('Бот запущен!');
+sendLogToTelegram('🟢 Бот успешно запущен');
 // bot.launch();
 // const PORT = process.env.PORT || 3000;
 // app.listen(PORT, () => console.log(`Bot is listening on port ${PORT}`));
