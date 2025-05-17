@@ -8,7 +8,7 @@ import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 
 
-const LOG_CHAT_ID = process.env.LOG_CHAT_ID; // Добавьте в .env
+const LOG_CHAT_ID = process.env.LOG_CHAT_ID;
 
 async function sendLogToTelegram(message) {
   if (!LOG_CHAT_ID) {
@@ -31,7 +31,7 @@ async function sendLogToTelegram(message) {
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const geojsonPath = path.join(__dirname, 'hydrants.geojson'); // Теперь путь будет корректным
+const geojsonPath = path.join(__dirname, 'hydrants.geojson');
 
 dotenv.config();
 
@@ -40,7 +40,7 @@ const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN);
 const app = express();
 app.use(express.json());
 app.post('/api/telegram', async (req, res) => {
-  await bot.handleUpdate(req.body, res);  // Передаём запрос в Telegraf
+  await bot.handleUpdate(req.body, res);
 });
 
 const logMessage = async (ctx) => {
@@ -59,11 +59,11 @@ const logMessage = async (ctx) => {
     `.trim();
 
     await sendLogToTelegram(logText);
-  // Дублируем в консоль для удобства
+
   console.log(logEntry.trim());
 };
 
-// Пример данных о гидрантах
+
 const hydrants = hydrantsGeoJSON.features.map(feature => ({
   lat: feature.geometry.coordinates[1],
   lng: feature.geometry.coordinates[0],
@@ -93,14 +93,14 @@ function getDistance(lat1, lng1, lat2, lng2) {
             Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
-  return Math.round(R * c); // Округляем до метров
+  return Math.round(R * c);
 }
 
 // Генерация статичной карты с Яндекс.API
 function generateYandexMap(center, hydrants) {
   const markers = hydrants.map((h, index) => {
     const number = index < 9 ? (index + 1).toString() :
-                   String.fromCharCode(65 + index - 9);
+                  String.fromCharCode(65 + index - 9);
     return `${h.lng},${h.lat},pm2blm${number}`;
   }).join('~');
 
@@ -112,7 +112,7 @@ app.get('/', (req, res) => {
   res.status(200).send('Bot is awake!');
 });
 
-// Обработчик сообщений
+
 bot.start((ctx) => {
   ctx.reply('Привет, Тушила! Вводи адрес, и я покажу тебе ближайшие пожарные гидранты. \n \nРаботаю я пока что только по району выезда 5 ПСЧ города Орла, потому что гидранты только там в базе - да и то не все \n \nДа и вообще это тестовый бот, доработок ещё много будет');
   setTimeout(() => ctx.reply('К чёрту предисловие, вводи адрес, как будто ты вводишь его в навигаторе. Город тоже уточнить не забудь )'), 10000);
@@ -153,7 +153,7 @@ bot.on('text', async (ctx) => {
   } catch (error) {
     console.error(error);
     const errorLog = `[${new Date().toISOString()}] ОШИБКА у ${ctx.from.id}: ${error.message}\n`;
-    // fs.appendFileSync('bot.log', errorLog, 'utf8');
+
     const errorMessage = `
     ‼️ ОШИБКА у ${ctx.from.id || 'неизвестного пользователя'}
     💬 Текст: ${ctx.message?.text || 'нет текста'}
@@ -168,8 +168,5 @@ bot.on('text', async (ctx) => {
 
 console.log('Бот запущен!');
 sendLogToTelegram('🟢 Бот успешно запущен');
-// bot.launch();
-// const PORT = process.env.PORT || 3000;
-// app.listen(PORT, () => console.log(`Bot is listening on port ${PORT}`));
 
 export default bot;
